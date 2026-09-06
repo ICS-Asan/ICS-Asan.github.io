@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 링크를 아는 사람만 보도록 — 검색엔진 색인 차단 -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>김한슬 | iOS Developer Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#E8EBFF', primaryTextColor: '#1E293B', primaryBorderColor: '#6B7FF2', lineColor: '#94A3B8', secondaryColor: '#F0ECFF', tertiaryColor: '#E3F4FB', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', fontSize: '14px' }});</script>
+    <style>
+        :root {
+            --primary: #6B7FF2;
+            --primary-light: #E8EBFF;
+            --secondary: #7EC8E3;
+            --secondary-light: #E3F4FB;
+            --accent: #A78BFA;
+            --accent-light: #F0ECFF;
+            --bg: #FAFBFE;
+            --bg-card: #FFFFFF;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --border: #E2E8F0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.04);
+            --radius: 12px;
+            --radius-lg: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', sans-serif;
+            background: var(--bg); color: var(--text-primary); line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(250,251,254,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); z-index: 100; padding: 0 24px;
+        }
+        nav .nav-inner {
+            max-width: 1120px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center; height: 56px;
+        }
+        nav .logo { font-weight: 700; font-size: 16px; color: var(--primary); text-decoration: none; white-space: nowrap; }
+        nav .logo .logo-role { margin-left: 6px; font-weight: 500; font-size: 13px; color: var(--text-muted); }
+        nav .nav-links { display: flex; gap: 24px; list-style: none; }
+        nav .nav-links a {
+            text-decoration: none; color: var(--text-secondary);
+            font-size: 13px; font-weight: 500; transition: color 0.2s;
+        }
+        nav .nav-links a:hover { color: var(--primary); }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+        .hero { padding: 140px 0 8px; text-align: center; }
+        .hero-badge {
+            display: inline-block; background: var(--primary-light); color: var(--primary);
+            font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px;
+        }
+        /* 이름과 연락처를 한 줄에 — 버튼 대신 텍스트라 종이에서도 읽히고 PDF에서는 클릭된다 */
+        .hero-identity {
+            display: flex; align-items: baseline; justify-content: center;
+            gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+        }
+        .hero h1 { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0; }
+        .hero .subtitle {
+            font-size: 18px; color: var(--text-secondary);
+            max-width: 720px; margin: 0 auto; line-height: 1.6;
+        }
+        .hero-contacts { display: flex; align-items: baseline; gap: 8px; font-size: 14px; }
+        .hero-contacts a {
+            text-decoration: none; color: var(--text-secondary);
+            border-bottom: 1px solid var(--border); transition: color 0.2s;
+        }
+        .hero-contacts a:hover { color: var(--primary); border-bottom-color: var(--primary); }
+        .hero-contacts .sep { color: var(--text-muted); }
+        .project-header img {
+            width: 80%; border-radius: var(--radius); margin-top: 12px;
+            display: block; margin-left: auto; margin-right: auto;
+        }
+        /* 고정 nav 높이만큼 여유를 둬야 앵커 이동 시 제목이 가려지지 않는다 */
+        .project-header[id], .sub-section[id] { scroll-margin-top: 76px; }
+        .project-header { padding: 12px 0 24px; }
+        .project-header .company { font-size: 14px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .project-header h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+        .project-header .project-meta { color: var(--text-secondary); font-size: 15px; margin-bottom: 12px; }
+        .project-header .project-desc { color: var(--text-secondary); font-size: 16px; line-height: 1.7; max-width: 700px; }
+        .project-content {
+            border-left: 4px solid var(--primary-light);
+            margin-left: 10px; padding-left: 40px; padding-bottom: 0;
+        }
+        .sub-section { padding: 48px 0 0; position: relative; }
+        .sub-section::before {
+            content: ''; position: absolute; left: -51px; top: 62px;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--primary); border: 3px solid var(--bg);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .sub-section:first-child { padding-top: 24px; }
+        .sub-section:first-child::before { top: 38px; }
+        .sub-section-header { margin-bottom: 24px; }
+        .sub-section-label {
+            display: inline-block; background: var(--primary-light); color: var(--primary);
+            font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 5px;
+            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
+        }
+        .sub-section-header h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+        .sub-section-header p { color: var(--text-secondary); font-size: 14px; }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 28px; margin-bottom: 16px;
+            box-shadow: var(--shadow); transition: box-shadow 0.2s;
+        }
+        .card:hover { box-shadow: var(--shadow-lg); }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .card-icon {
+            width: 36px; height: 36px; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .card-icon.blue { background: var(--primary-light); }
+        .card-icon.green { background: #DCFCE7; }
+        .card-icon.purple { background: var(--accent-light); }
+        .card-icon.cyan { background: var(--secondary-light); }
+        .card-icon.amber { background: #FEF3C7; }
+        .card-icon.rose { background: #FFE4E6; }
+        .card h4 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+        .card .card-subtitle { font-size: 13px; color: var(--text-muted); }
+        .card p, .card li { color: var(--text-secondary); font-size: 14px; line-height: 1.8; }
+        .card ul { list-style: none; padding: 0; }
+        .card ul li { position: relative; padding-left: 18px; margin-bottom: 6px; }
+        .card ul li::before {
+            content: ''; position: absolute; left: 0; top: 10px;
+            width: 5px; height: 5px; border-radius: 50%; background: var(--primary);
+        }
+        .card-group-title {
+            font-size: 13px; font-weight: 700; color: var(--text-primary);
+            margin-top: 16px; margin-bottom: 6px;
+        }
+        .card-group-title:first-of-type { margin-top: 0; }
+        .decision-box {
+            background: var(--primary-light); border-radius: var(--radius);
+            padding: 16px 20px; margin-top: 12px;
+        }
+        .decision-box .decision-title {
+            font-size: 12px; font-weight: 700; color: var(--primary);
+            margin-bottom: 6px; letter-spacing: 0.03em;
+        }
+        .decision-box p { color: var(--text-primary); font-size: 13px; line-height: 1.7; }
+        .img-placeholder {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+            border-radius: var(--radius); padding: 40px; text-align: center;
+            color: var(--text-muted); font-size: 13px; margin-top: 12px;
+            border: 2px dashed var(--border);
+        }
+        .flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+        .flow-step {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 7px;
+            padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--text-primary);
+        }
+        .flow-arrow { color: var(--text-muted); font-size: 14px; }
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+        .tag {
+            background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+            padding: 4px 12px; font-size: 12px; font-weight: 600; color: var(--text-secondary);
+        }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+        .stat-item { text-align: center; padding: 16px; background: var(--bg); border-radius: var(--radius); }
+        .stat-number { font-size: 24px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        footer {
+            padding: 40px 0; text-align: center;
+            border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero .subtitle { font-size: 16px; }
+            nav .nav-links { display: none; }
+            .card { padding: 20px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .project-content { margin-left: 8px; padding-left: 24px; }
+        }
+        /* ── 인쇄: 페이지를 나누지 않고 한 장으로 출력 ──
+           화면 레이아웃을 그대로 유지하므로 다이어그램·스크린샷이 원래 크기로 나온다.
+           높이는 문서 전체 길이에 맞춰 지정. 내용이 늘면 이 값도 함께 키워야 한다. */
+        @media print {
+            @page { size: 1160px 13400px; margin: 0; }
+            nav { display: none; }
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact; print-color-adjust: exact;
+            }
+            /* 화면에서는 고정 nav 를 피하려고 준 여백 — 인쇄에선 불필요 */
+            .hero { padding-top: 44px; }
+            .card { box-shadow: none; border: 1px solid #E2E8F0; }
+            .card:hover { box-shadow: none; }
+            .stat-item, .decision-box {
+                -webkit-print-color-adjust: exact; print-color-adjust: exact;
+            }
+            .mermaid svg { max-width: 100% !important; height: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="logo">Kim Han Seul<span class="logo-role">· iOS Developer</span></a>
+        <ul class="nav-links">
+            <li><a href="#mevu">미브 (mevu)</a></li>
+            <li><a href="#gongbiseo">공비서 원장님</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">iOS Developer</div>
+        <div class="hero-identity">
+            <h1>김한슬</h1>
+            <div class="hero-contacts">
+                <a href="mailto:carpediem1015@gmail.com">carpediem1015@gmail.com</a>
+                <span class="sep">·</span>
+                <a href="https://github.com/ICS-Asan" target="_blank">github.com/ICS-Asan</a>
+            </div>
+        </div>
+        <p class="subtitle">아키텍처 표준을 세우고 AI로 개발 프로세스를 자동화하는 iOS 개발자입니다.</p>
+    </section>
+
+    <!-- Project Header : 이스트에이드 -->
+    <div class="project-header" id="mevu">
+        <div class="company">(주)이스트에이드 · iOS Developer · 2026.05 ~ 재직 중</div>
+        <h2>미브 (mevu)</h2>
+        <div class="project-meta">AI 프로필 사진 서비스 iOS 앱</div>
+        <p class="project-desc">AI로 프로필 사진을 생성하는 iOS 앱입니다. 미브 iOS 개발을 1인 담당하며, 자사 앱 '줌(ZUM)'과의 공통 iOS 아키텍처 표준 수립도 병행하고 있습니다.</p>
+        <div class="tags">
+            <span class="tag">Swift</span>
+            <span class="tag">SwiftUI</span>
+            <span class="tag">TCA</span>
+            <span class="tag">Clean Architecture</span>
+            <span class="tag">Swift Concurrency</span>
+            <span class="tag">Get</span>
+            <span class="tag">Tuist</span>
+            <span class="tag">OSLog</span>
+            <span class="tag">RevenueCat</span>
+            <span class="tag">Hackle</span>
+        </div>
+        <img src="images/app_screenshot_mevu.png" alt="미브(mevu) 앱스토어 스크린샷">
+    </div>
+
+    <!-- Project Content : 이스트에이드 -->
+    <div class="project-content">
+
+        <div class="sub-section" id="est-ai-maturity">
+            <div class="sub-section-header">
+                <div class="sub-section-label">AI Automation · 하네스 · 최적화</div>
+                <h3>AI 자동화 도구 — 하네스 엔지니어링과 최적화</h3>
+                <p>생성/검증 역할 분리와 실측 근거 기반 최적화로 AI 자동 생성 도구의 신뢰도와 효율을 함께 확보했습니다</p>
+            </div>
+            <!-- Card 1 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon purple">🤖</div>
+                    <div>
+                        <h4>개발 일감 계획 하네스</h4>
+                        <div class="card-subtitle">다양한 입력 자료 → 영향 범위 포함 일감 생성</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>기획 자료·Figma·백엔드 스펙·기존 코드 등 작업에 필요한 자료를 분석해 <strong>구현 범위와 영향도까지 포함한 개발 일감을 자동 생성</strong>하는 task-planner 스킬 구축</li>
+                    <li><strong>생성/검증 역할 분리 · 파일 기반 결과 전달로 메인 컨텍스트 오염 방지</strong> 등 하네스 엔지니어링 원칙 적용 (서브에이전트로 역할 분리 → 품질 게이트 확보)</li>
+                    <li>Figma MCP rate-limit 병목을 <strong>전용 fetcher 신설(노드당 1회 fetch)</strong>로 해결 → <strong>서브에이전트 토큰 65% 절감</strong></li>
+                </ul>
+                <div class="flow-diagram" style="margin-top: 24px;">
+                    <svg viewBox="0 0 1100 570" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; display: block;">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                                <path d="M0 0 L10 5 L0 10 z" fill="#64748B"/>
+                            </marker>
+                            <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                                <path d="M0 0 L10 5 L0 10 z" fill="#A78BFA"/>
+                            </marker>
+                            <marker id="arrow-fail" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                                <path d="M0 0 L10 5 L0 10 z" fill="#F43F5E"/>
+                            </marker>
+                            <linearGradient id="frustum-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+                                <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.15"/>
+                                <stop offset="100%" stop-color="#F0ECFF" stop-opacity="0.35"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- LEFT COLUMN LABEL -->
+                        <text x="200" y="18" text-anchor="middle" font-size="13" font-weight="700" fill="#94A3B8" font-family="sans-serif" letter-spacing="1">TASK-PLANNER FLOW</text>
+
+                        <!-- Step 1: 입력 -->
+                        <rect x="30" y="32" width="340" height="58" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+                        <text x="200" y="54" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B" font-family="sans-serif">Step 1 · 입력</text>
+                        <text x="200" y="74" text-anchor="middle" font-size="12" fill="#64748B" font-family="sans-serif">기획 자료 · Figma · 백엔드 스펙 · 코드</text>
+
+                        <line x1="200" y1="90" x2="200" y2="112" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                        <!-- Step 2: 병렬 분석 (3 items vertical) -->
+                        <rect x="30" y="114" width="340" height="146" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+                        <text x="200" y="134" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B" font-family="sans-serif">Step 2 · 병렬 분석</text>
+
+                        <rect x="45" y="145" width="310" height="32" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="60" y="166" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">document-analyzer</text>
+                        <text x="340" y="166" text-anchor="end" font-size="10.5" fill="#64748B" font-family="sans-serif">기획 자료 분석</text>
+
+                        <!-- figma-analyze 강조 -->
+                        <rect x="45" y="182" width="310" height="32" rx="6" fill="#F0ECFF" stroke="#A78BFA" stroke-width="1.5"/>
+                        <text x="60" y="203" font-size="12" font-weight="700" fill="#7C3AED" font-family="sans-serif">figma-analyze ⭐</text>
+                        <text x="340" y="203" text-anchor="end" font-size="10.5" fill="#7C3AED" font-family="sans-serif">Figma 분석</text>
+
+                        <rect x="45" y="219" width="310" height="32" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="60" y="240" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">code-analyzer</text>
+                        <text x="340" y="240" text-anchor="end" font-size="10.5" fill="#64748B" font-family="sans-serif">코드 탐색</text>
+
+                        <line x1="200" y1="260" x2="200" y2="282" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                        <!-- Step 3: 통합·생성·검증 (side-effect + Generator + Evaluator) -->
+                        <rect x="30" y="284" width="340" height="170" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+                        <text x="200" y="304" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B" font-family="sans-serif">Step 3 · 통합·생성·검증</text>
+
+                        <rect x="45" y="315" width="310" height="32" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="60" y="336" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">side-effect-analyzer</text>
+                        <text x="340" y="336" text-anchor="end" font-size="10.5" fill="#64748B" font-family="sans-serif">통합 영향도</text>
+
+                        <line x1="200" y1="349" x2="200" y2="359" stroke="#64748B" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+                        <rect x="45" y="361" width="310" height="32" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="60" y="382" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">Generator</text>
+                        <text x="340" y="382" text-anchor="end" font-size="10.5" fill="#64748B" font-family="sans-serif">task draft 생성</text>
+
+                        <line x1="200" y1="395" x2="200" y2="405" stroke="#64748B" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+                        <!-- Evaluator 강조 -->
+                        <rect x="45" y="407" width="310" height="32" rx="6" fill="#F0ECFF" stroke="#A78BFA" stroke-width="1.5"/>
+                        <text x="60" y="428" font-size="12" font-weight="700" fill="#7C3AED" font-family="sans-serif">task-evaluator ⭐</text>
+                        <text x="340" y="428" text-anchor="end" font-size="10.5" fill="#7C3AED" font-family="sans-serif">품질 게이트</text>
+
+                        <!-- Fail loop: Evaluator → Generator (재요청) -->
+                        <path d="M 355,423 C 388,420 388,380 355,380" fill="none" stroke="#F43F5E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-fail)"/>
+                        <text x="395" y="400" font-size="10.5" font-weight="700" fill="#F43F5E" font-family="sans-serif">FAIL</text>
+                        <text x="395" y="414" font-size="10" fill="#F43F5E" font-family="sans-serif">재요청</text>
+
+                        <line x1="200" y1="454" x2="200" y2="476" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+                        <text x="215" y="470" font-size="10" font-weight="700" fill="#10B981" font-family="sans-serif">PASS</text>
+
+                        <!-- Step 4: Jira 등록 -->
+                        <rect x="30" y="478" width="340" height="58" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+                        <text x="200" y="500" text-anchor="middle" font-size="14" font-weight="700" fill="#1E293B" font-family="sans-serif">Step 4 · Jira 등록</text>
+                        <text x="200" y="520" text-anchor="middle" font-size="12" fill="#64748B" font-family="sans-serif">jira-task-creator · 영향 범위 포함 일감</text>
+
+                        <!-- 사다리꼴 확대 연결선 (세로 점선 없음, 상/하 대각선만) -->
+                        <polygon points="355,182 620,25 620,510 355,214"
+                            fill="url(#frustum-grad)"
+                            opacity="0.8"/>
+                        <line x1="355" y1="182" x2="620" y2="25" stroke="#A78BFA" stroke-width="0.5" stroke-dasharray="4,3" opacity="0.8"/>
+                        <line x1="355" y1="214" x2="620" y2="510" stroke="#A78BFA" stroke-width="0.5" stroke-dasharray="4,3" opacity="0.8"/>
+
+                        <!-- RIGHT COLUMN LABEL -->
+                        <text x="850" y="18" text-anchor="middle" font-size="13" font-weight="700" fill="#7C3AED" font-family="sans-serif" letter-spacing="1">FIGMA-ANALYZE 스킬 구동방식</text>
+
+                        <!-- Input: Figma 노드 -->
+                        <rect x="620" y="32" width="460" height="52" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+                        <text x="850" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#1E293B" font-family="sans-serif">Input · Figma 노드 (N개)</text>
+                        <text x="850" y="73" text-anchor="middle" font-size="11" fill="#64748B" font-family="sans-serif">화면 · 플로우 · 브랜치 · 컴포넌트</text>
+
+                        <line x1="850" y1="84" x2="850" y2="106" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                        <!-- figma-fetcher 강조 (신설) -->
+                        <rect x="620" y="108" width="460" height="86" rx="10" fill="#F0ECFF" stroke="#A78BFA" stroke-width="2"/>
+                        <text x="850" y="132" text-anchor="middle" font-size="14" font-weight="700" fill="#7C3AED" font-family="sans-serif">figma-fetcher ⭐ 신설</text>
+                        <text x="850" y="152" text-anchor="middle" font-size="12" fill="#7C3AED" font-family="sans-serif">노드당 1회 fetch → raw 데이터 저장</text>
+                        <text x="850" y="172" text-anchor="middle" font-size="11" fill="#64748B" font-family="sans-serif">이전: 각 lens마다 개별 fetch → rate-limit 도달</text>
+
+                        <line x1="850" y1="194" x2="850" y2="222" stroke="#A78BFA" stroke-width="1.8" marker-end="url(#arrow-accent)"/>
+                        <text x="882" y="212" font-size="11" fill="#7C3AED" font-family="sans-serif" font-style="italic">raw 전달</text>
+
+                        <!-- 4 Lens 병렬 -->
+                        <rect x="620" y="224" width="460" height="190" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+                        <text x="850" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="#1E293B" font-family="sans-serif">Lens 서브에이전트 (병렬)</text>
+
+                        <rect x="635" y="262" width="215" height="66" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="742" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">figma-screen-analyzer</text>
+                        <text x="742" y="300" text-anchor="middle" font-size="10.5" fill="#64748B" font-family="sans-serif">화면 요소 분석</text>
+                        <text x="742" y="318" text-anchor="middle" font-size="10" fill="#94A3B8" font-family="monospace">→ screen.md</text>
+
+                        <rect x="855" y="262" width="215" height="66" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="962" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">figma-flow-analyzer</text>
+                        <text x="962" y="300" text-anchor="middle" font-size="10.5" fill="#64748B" font-family="sans-serif">화면 흐름 분석</text>
+                        <text x="962" y="318" text-anchor="middle" font-size="10" fill="#94A3B8" font-family="monospace">→ flow.md</text>
+
+                        <rect x="635" y="338" width="215" height="66" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="742" y="358" text-anchor="middle" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">figma-branch-analyzer</text>
+                        <text x="742" y="376" text-anchor="middle" font-size="10.5" fill="#64748B" font-family="sans-serif">브랜치·조건 분석</text>
+                        <text x="742" y="394" text-anchor="middle" font-size="10" fill="#94A3B8" font-family="monospace">→ branch.md</text>
+
+                        <rect x="855" y="338" width="215" height="66" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+                        <text x="962" y="358" text-anchor="middle" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">figma-common-rules</text>
+                        <text x="962" y="376" text-anchor="middle" font-size="10.5" fill="#64748B" font-family="sans-serif">공통 규칙 검사</text>
+                        <text x="962" y="394" text-anchor="middle" font-size="10" fill="#94A3B8" font-family="monospace">→ rules.md</text>
+
+                        <line x1="850" y1="414" x2="850" y2="436" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                        <!-- Output: figma.md 통합 -->
+                        <rect x="620" y="438" width="460" height="66" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+                        <text x="850" y="462" text-anchor="middle" font-size="13" font-weight="700" fill="#1E293B" font-family="sans-serif">Output · figma.md (통합)</text>
+                        <text x="850" y="482" text-anchor="middle" font-size="11" fill="#64748B" font-family="sans-serif">서브에이전트 토큰 1.6M → 570K (65% 절감)</text>
+                    </svg>
+                </div>
+                <div class="decision-box">
+                    <div class="decision-title">왜 figma-fetcher를 신설했나</div>
+                    <p><strong>문제:</strong> figma-analyze의 lens 서브에이전트 4종이 각자 Figma MCP API 3개를 호출하면서 노드당 12회 호출이 발생. 시범 실행에서 rate-limit 도달로 매트릭스 spawn 후 결과 종합 실패.</p>
+                    <p style="margin-top: 8px;"><strong>대안 검토:</strong> lens 호출 시점 지연·순차 실행 등도 검토했으나, 근본적으로 API 호출 횟수 자체를 줄이는 방향을 선택.</p>
+                    <p style="margin-top: 8px;"><strong>선택:</strong> 노드당 fetcher가 Figma MCP 3개 API(<code>get_design_context</code> · <code>get_metadata</code> · <code>get_screenshot</code>)를 1회씩만 호출해 raw 데이터를 lens 서브에이전트에 전달하는 패턴 신설. 배치 단위 순차 실행으로 순간 부하까지 분산.</p>
+                    <p style="margin-top: 8px;"><strong>결과:</strong> 노드당 호출 12회 → 3회, 서브에이전트 토큰 <strong>1.6M → 570K (약 65% 절감)</strong>, rate-limit 회피.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-section" id="est-architecture-v2">
+            <div class="sub-section-header">
+                <div class="sub-section-label">Architecture Standard · V2 Networking</div>
+                <h3>iOS 아키텍처 표준 수립과 V2 네트워킹 신규 구현</h3>
+                <p>TCA + Clean Architecture로 iOS 표준을 세우고, Data 레이어를 V2 네트워킹으로 신규 구현했습니다</p>
+            </div>
+            <!-- Merged Card: 아키텍처 표준 + V2 네트워킹 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon blue">📐</div>
+                    <div>
+                        <h4>iOS 아키텍처 표준 수립 (TCA + Clean Architecture)</h4>
+                        <div class="card-subtitle">Feature → Domain → Data 단방향 의존 · SwiftUI + TCA 기반 · Data 레이어를 V2 네트워킹으로 신규 구현</div>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>TCA + Clean Architecture 표준 수립</strong> — Feature(View·Store) → Domain(UseCase·Model) → Data(Router·Client·DTO·NetworkClient) 단방향 의존. Feature ↔ UseCase 1:1로 Store는 UseCase만 의존 (<code>@Dependency</code> 기반 DI)</li>
+                    <li><strong>UseCase가 DTO → Model 변환을 책임</strong> — DTO는 전 필드 옵셔널로 서버 스펙 변동을 흡수하고, UseCase에서 Model 매핑 시점에 폴백 처리 (필드 누락 크래시 회피)</li>
+                    <li><strong>화면 상태 관리를 TCA로 점진 전환</strong> — ViewModel·인라인 <code>@State</code>·부분 TCA가 혼재하던 화면 상태를 표준 체인으로 정리. 레거시와 병존시키며 전환해 일괄 재작성 회피</li>
+                    <li><strong>Data 레이어를 V2로 신규 구현</strong> — async/await + Get + <code>@Dependency</code> 기반 Router·Client·DTO 3계층, 도메인별 분할 + 공통 인프라(NetworkClient·AuthInterceptor·TokenStore 등). Swagger tag 단일 기준으로 도메인 매핑</li>
+                    <li><strong>직접 만든 <code>/v2-api</code> 스킬</strong>로 Swagger tag 입력 → Router·Client·DTO·README 자동 생성, 코드↔문서 동기화 유지</li>
+                </ul>
+                <div class="flow-diagram" style="margin-top: 24px;">
+                    <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; display: block;">
+                        <defs>
+                            <marker id="merged-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                                <path d="M0 0 L10 5 L0 10 z" fill="#64748B"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Left column title -->
+                        <text x="40" y="30" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#334155">계층별 호출 체인</text>
+
+                        <!-- Feature layer group -->
+                        <rect x="40" y="48" width="500" height="180" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+                        <text x="60" y="78" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#1E3A8A">Feature</text>
+                        <text x="140" y="78" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">화면 계층 · 사용자 플로우</text>
+                        <rect x="70" y="94" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1"/>
+                        <text x="90" y="118" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#1E3A8A">View</text>
+                        <text x="90" y="138" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">SwiftUI View · 이벤트 진입</text>
+                        <line x1="290" y1="152" x2="290" y2="163" stroke="#64748B" stroke-width="1.5" marker-end="url(#merged-arrow)"/>
+                        <rect x="70" y="166" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1"/>
+                        <text x="90" y="190" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#1E3A8A">Store <tspan font-size="12" font-weight="400" fill="#64748B">(@Reducer)</tspan></text>
+                        <text x="90" y="210" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">액션 수신 · 이펙트 발행</text>
+
+                        <!-- Arrow to Domain -->
+                        <line x1="290" y1="230" x2="290" y2="250" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
+
+                        <!-- Domain layer group -->
+                        <rect x="40" y="255" width="500" height="150" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+                        <text x="60" y="285" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#065F46">Domain</text>
+                        <text x="140" y="285" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">업무 로직 · UseCase가 Client 참조</text>
+                        <rect x="70" y="300" width="440" height="90" rx="6" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="1"/>
+                        <text x="90" y="326" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#065F46">UseCase.fetch()</text>
+                        <text x="90" y="352" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#475569">· Client 참조 (엔드포인트 호출)</text>
+                        <text x="90" y="374" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#475569">· DTO → Model 변환 (옵셔널 폴백)</text>
+
+                        <!-- Arrow to Data -->
+                        <line x1="290" y1="405" x2="290" y2="425" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
+
+                        <!-- Data layer group -->
+                        <rect x="40" y="430" width="500" height="180" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+                        <text x="60" y="460" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#92400E">Data / Network</text>
+                        <text x="205" y="460" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">V2 네트워킹 신규 구현 영역</text>
+                        <rect x="70" y="476" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#FCD34D" stroke-width="1"/>
+                        <text x="90" y="500" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#92400E">Client.get()</text>
+                        <text x="90" y="520" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">Router 기반 · @DependencyClient</text>
+                        <line x1="290" y1="534" x2="290" y2="545" stroke="#64748B" stroke-width="1.5" marker-end="url(#merged-arrow)"/>
+                        <rect x="70" y="548" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#FCD34D" stroke-width="1"/>
+                        <text x="90" y="572" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#92400E">NetworkClient</text>
+                        <text x="90" y="592" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">Get · AuthInterceptor · TokenStore</text>
+
+                        <!-- Arrow to Backend -->
+                        <line x1="290" y1="612" x2="290" y2="632" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
+                        <rect x="70" y="635" width="440" height="44" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+                        <text x="90" y="663" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#334155">Backend API</text>
+
+                        <!-- Divider -->
+                        <line x1="580" y1="20" x2="580" y2="700" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4,4"/>
+
+                        <!-- Right column title -->
+                        <text x="610" y="30" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#7C3AED">V2 네트워킹 폴더 구조</text>
+
+                        <!-- Folder tree -->
+                        <g fill="#334155">
+                            <rect x="610" y="48" width="450" height="340" rx="8" fill="#FAFAF9" stroke="#E7E5E4" stroke-width="1"/>
+                            <text x="630" y="86" font-family="ui-monospace, SFMono-Regular, monospace" font-size="15" font-weight="700" fill="#7C3AED">V2/Domain/&lt;Name&gt;/</text>
+                            <text x="640" y="122" font-family="ui-monospace, SFMono-Regular, monospace" font-size="14" fill="#475569">├─ &lt;Name&gt;Router.swift</text>
+                            <text x="660" y="144" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#94A3B8">Routable 준수 · case = 엔드포인트</text>
+                            <text x="640" y="176" font-family="ui-monospace, SFMono-Regular, monospace" font-size="14" fill="#475569">├─ &lt;Name&gt;Client.swift</text>
+                            <text x="660" y="198" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#94A3B8">@DependencyClient · fetch/get/post</text>
+                            <text x="640" y="230" font-family="ui-monospace, SFMono-Regular, monospace" font-size="14" fill="#475569">├─ DTO/</text>
+                            <text x="660" y="252" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#94A3B8">Request/Response · 전 필드 옵셔널</text>
+                            <text x="640" y="284" font-family="ui-monospace, SFMono-Regular, monospace" font-size="14" fill="#475569">└─ README.md</text>
+                            <text x="660" y="306" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#94A3B8">/v2-api 스킬이 코드와 동기 생성</text>
+                            <text x="630" y="360" font-family="ui-sans-serif, -apple-system" font-size="12" font-style="italic" fill="#94A3B8">※ 폴더명은 모듈 이름 컨벤션, 실제 내용은 Data 계층</text>
+                        </g>
+                        <g font-family="ui-sans-serif, -apple-system">
+                            <rect x="610" y="410" width="450" height="110" rx="8" fill="#FEF9C3" stroke="#EAB308" stroke-width="1"/>
+                            <text x="630" y="440" font-size="14" font-weight="700" fill="#854D0E">V2/Network/ · 공통 인프라</text>
+                            <text x="630" y="466" font-size="12" fill="#475569">NetworkClient · Routable · AuthInterceptor</text>
+                            <text x="630" y="486" font-size="12" fill="#475569">TokenStore · ErrorLoggerClient · MockClient</text>
+                            <text x="630" y="506" font-size="12" fill="#475569">MultipartForm · APIResponseV2 · NetworkError</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-section" id="est-iap">
+            <div class="sub-section-header">
+                <div class="sub-section-label">IAP · 결제 안정화</div>
+                <h3>인앱 결제 안정화</h3>
+                <p>재현되지 않는 결제 실패를 지연 환경 재현으로 추적해, 결제 완료와 페이월 dismiss가 경쟁하던 문제를 상태 설계로 해결했습니다</p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon rose">💳</div>
+                    <div>
+                        <h4>재현되지 않는 결제 실패 추적과 dismiss race condition 해결</h4>
+                        <div class="card-subtitle">응답 지연 확인 → 지연 환경 재현 → 결제 상태에 중간 상태 도입</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>결제 실패 리포트는 올라오는데 <strong>로컬에서 재현되지 않던 문제</strong> — API 응답을 확인해 <strong>결제 요청 후 응답이 늦게 들어오는 상황</strong>을 파악</li>
+                    <li><strong>Network Link Conditioner로 네트워크를 느리게 만든 환경에서 재현 성공</strong> — 결제 성공 직후 SDK가 페이월을 닫는데 <strong>close 콜백이 없어 앱이 dismiss를 사용자 취소로 해석</strong>하고 있었고, <strong>서버 검증(단건/번들 판별·번들권 할당) 응답을 기다리는 사이 이 해석이 먼저 발동</strong>해 성공한 결제가 취소로 기록됨</li>
+                    <li>SDK 동작은 바꿀 수 없으니 취소 판정을 걷어내는 대신 <strong>서버 검증 중을 뜻하는 <code>.processing</code> 중간 상태를 추가</strong> — <code>onPurchaseCompleted</code>에서 <strong>Task 밖 동기 코드로 전이</strong>시켜 SDK 자동 dismiss(→<code>onDisappear</code>)보다 먼저 실행되도록 보장하고, <code>onDisappear</code>는 <code>.presenting</code>일 때만 취소 처리</li>
+                    <li>상태를 구독하는 <strong>결제 플로우에서도 <code>.processing</code>을 종료 상태에서 제외</strong> — 서버 검증 완료까지 결제 결과가 확정되지 않도록 대기 계약을 함께 정리</li>
+                </ul>
+                <div class="flow-diagram" style="margin-top: 24px;">
+                    <svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; display: block;">
+                        <defs>
+                            <marker id="iap-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                                <path d="M0 0 L10 5 L0 10 z" fill="#64748B"/>
+                            </marker>
+                        </defs>
+                        <text x="40" y="24" font-family="ui-sans-serif, -apple-system" font-size="14" font-weight="700" fill="#334155">느린 네트워크에서의 결제 완료 처리</text>
+
+                        <!-- Before lane -->
+                        <rect x="40" y="42" width="1020" height="160" rx="10" fill="#FFF1F2" stroke="#FDA4AF" stroke-width="1.5"/>
+                        <text x="64" y="70" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#9F1239">Before</text>
+                        <text x="140" y="70" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">close 콜백이 없어 dismiss를 사용자 취소 신호로 사용</text>
+
+                        <rect x="64" y="105" width="100" height="44" rx="8" fill="#FFFFFF" stroke="#FDA4AF" stroke-width="1"/>
+                        <text x="114" y="132" text-anchor="middle" font-family="ui-sans-serif, -apple-system" font-size="13" font-weight="600" fill="#334155">결제 완료</text>
+                        <line x1="175" y1="100" x2="175" y2="172" stroke="#94A3B8" stroke-width="1.5"/>
+                        <line x1="164" y1="127" x2="175" y2="127" stroke="#94A3B8" stroke-width="1.5"/>
+
+                        <line x1="175" y1="100" x2="188" y2="100" stroke="#64748B" stroke-width="1.5" marker-end="url(#iap-arrow)"/>
+                        <rect x="192" y="82" width="250" height="36" rx="6" fill="#FFFFFF" stroke="#FDA4AF" stroke-width="1"/>
+                        <text x="204" y="105" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#334155">SDK 자동 dismiss → onDisappear</text>
+                        <line x1="442" y1="100" x2="468" y2="100" stroke="#64748B" stroke-width="1.5" marker-end="url(#iap-arrow)"/>
+                        <rect x="472" y="82" width="156" height="36" rx="6" fill="#FEE2E2" stroke="#F43F5E" stroke-width="1"/>
+                        <text x="484" y="105" font-family="ui-sans-serif, -apple-system" font-size="12" font-weight="600" fill="#9F1239">취소로 해석 → .cancel</text>
+                        <text x="644" y="105" font-family="ui-sans-serif, -apple-system" font-size="12" font-weight="600" fill="#9F1239">결제 결과 = 취소 확정</text>
+
+                        <line x1="175" y1="172" x2="188" y2="172" stroke="#64748B" stroke-width="1.5" marker-end="url(#iap-arrow)"/>
+                        <rect x="192" y="154" width="250" height="36" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+                        <text x="204" y="177" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#334155">서버 검증 (단건/번들 판별)</text>
+                        <line x1="442" y1="172" x2="700" y2="172" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#iap-arrow)"/>
+                        <text x="510" y="166" font-family="ui-sans-serif, -apple-system" font-size="11" fill="#94A3B8">네트워크 지연</text>
+                        <rect x="706" y="154" width="170" height="36" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+                        <text x="718" y="177" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">검증 완료 — 이미 늦음</text>
+
+                        <!-- After lane -->
+                        <rect x="40" y="222" width="1020" height="160" rx="10" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.5"/>
+                        <text x="64" y="250" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#065F46">After</text>
+                        <text x="130" y="250" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">결제 완료 시점을 상태로 표시</text>
+
+                        <rect x="64" y="285" width="100" height="44" rx="8" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="1"/>
+                        <text x="114" y="312" text-anchor="middle" font-family="ui-sans-serif, -apple-system" font-size="13" font-weight="600" fill="#334155">결제 완료</text>
+                        <line x1="164" y1="307" x2="180" y2="307" stroke="#64748B" stroke-width="1.5" marker-end="url(#iap-arrow)"/>
+                        <rect x="184" y="285" width="176" height="44" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+                        <text x="196" y="305" font-family="ui-sans-serif, -apple-system" font-size="12" font-weight="700" fill="#065F46">.processing 전이</text>
+                        <text x="196" y="321" font-family="ui-sans-serif, -apple-system" font-size="10" fill="#475569">Task 밖 동기 실행</text>
+
+                        <line x1="372" y1="280" x2="372" y2="352" stroke="#94A3B8" stroke-width="1.5"/>
+                        <line x1="360" y1="307" x2="372" y2="307" stroke="#94A3B8" stroke-width="1.5"/>
+
+                        <line x1="372" y1="280" x2="386" y2="280" stroke="#64748B" stroke-width="1.5" marker-end="url(#iap-arrow)"/>
+                        <rect x="390" y="262" width="244" height="36" rx="6" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="1"/>
+                        <text x="402" y="285" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#334155">onDisappear — .presenting 아님</text>
+                        <line x1="634" y1="280" x2="660" y2="280" stroke="#64748B" stroke-width="1.5" marker-end="url(#iap-arrow)"/>
+                        <rect x="664" y="262" width="140" height="36" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+                        <text x="676" y="285" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">취소 처리 안 함</text>
+
+                        <line x1="372" y1="352" x2="386" y2="352" stroke="#64748B" stroke-width="1.5" marker-end="url(#iap-arrow)"/>
+                        <rect x="390" y="334" width="244" height="36" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+                        <text x="402" y="357" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#334155">서버 검증 (단건/번들 판별)</text>
+                        <line x1="634" y1="352" x2="790" y2="352" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#iap-arrow)"/>
+                        <text x="668" y="346" font-family="ui-sans-serif, -apple-system" font-size="11" fill="#94A3B8">네트워크 지연</text>
+                        <rect x="796" y="334" width="150" height="36" rx="6" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+                        <text x="808" y="357" font-family="ui-sans-serif, -apple-system" font-size="12" font-weight="600" fill="#065F46">.success 확정</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-section" id="est-product-spec">
+            <div class="sub-section-header">
+                <div class="sub-section-label">Product Spec · 정책 정의</div>
+                <h3>프로덕트 스펙·정책 주도</h3>
+                <p>기능의 동작 정책과 UI/UX 스펙을 직접 정의하고, 고정된 실험 일정에 맞춰 개발 범위를 조정했습니다</p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon green">🎯</div>
+                    <div>
+                        <h4>기능 정책 정의와 일정 제약 하 범위 조정</h4>
+                        <div class="card-subtitle">정책·UI 스펙 직접 정의 · 일정 제약 하 개발 범위 축소</div>
+                    </div>
+                </div>
+                <div class="card-group-title">'최근 사용 사진' 기능</div>
+                <ul>
+                    <li>AI 프로필 생성 특성상 <strong>사용자가 즐겨 쓰는 사진이 정해져 있는데</strong>, 사진첩은 계속 쌓여 <strong>썼던 사진이 아래로 밀리고 무엇을 썼는지 기억하기도 어려운</strong> 문제 — 팀에서 필요성만 논의되던 기능을 맡아 진행</li>
+                    <li><strong>언제 목록에 남길지(저장 시점)·어디에 어떤 순서로 보여줄지(노출 규칙)·상한을 넘으면 무엇부터 지울지(정리 규칙)</strong> 등 동작 정책과 UI/UX 스펙을 직접 정의</li>
+                    <li>iOS에서 먼저 구현한 뒤 <strong>스펙 문서로 정리해 PO·디자이너·Android에 공유</strong> — Android가 같은 문서로 구현해 두 플랫폼이 동일 동작으로 동시 배포</li>
+                </ul>
+                <div class="card-group-title">미리보기 퍼널 실험</div>
+                <ul>
+                    <li><strong>정책·디자인 확정이 지연되어 초기 스펙대로는 고정된 실험 일정을 맞출 수 없다고 판단</strong>, 검증에 필요한 최소 동작만 남기는 <strong>축소안을 먼저 제안</strong></li>
+                </ul>
+                <div class="decision-box">
+                    <div class="decision-title">왜 스펙을 줄이자고 했나</div>
+                    <p><strong>문제:</strong> 정책·디자인 확정이 지연되면서 개발 착수가 늦어져, 초기 스펙대로는 실험을 이번 배포에 태울 수 없는 상황.</p>
+                    <p style="margin-top: 8px;"><strong>대안 검토:</strong> 배포를 다음 사이클로 미루는 안은 마케팅·실험 일정이 고정이라 불가능 → 스펙 범위를 줄이는 방향으로 전환.</p>
+                    <p style="margin-top: 8px;"><strong>선택:</strong> 초기 스펙은 백엔드가 미리보기 관련 사용자 데이터를 저장·관리하고 Hackle 이벤트까지 조회해 API 응답으로 내려주는 구조. 이를 <strong>클라이언트가 Hackle 유저 속성·이벤트 조회를 직접 사용</strong>하는 형태로 바꿔, 백엔드 작업을 미리보기 생성 기능으로 좁힘.</p>
+                    <p style="margin-top: 8px;"><strong>결과:</strong> 리드타임 산정 <strong>7일 → 4일</strong>, 고정된 실험 일정 안에 배포.</p>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /project-content 이스트에이드 -->
+
+    <!-- Project Header : 헤렌 -->
+    <div class="project-header" id="gongbiseo">
+        <div class="company">(주)헤렌 · iOS Developer · 2022.10 ~ 2026.05</div>
+        <h2>공비서 원장님</h2>
+        <div class="project-meta">뷰티샵 CRM SaaS iOS/iPadOS 앱</div>
+        <p class="project-desc">뷰티/헬스케어 매장을 위한 CRM SaaS 서비스로, 예약 관리·고객 관리·매출 관리·알림톡 발송 등 매장 운영에 필요한 기능을 제공하는 iOS/iPadOS 앱입니다.</p>
+        <div class="tags">
+            <span class="tag">Swift</span>
+            <span class="tag">UIKit</span>
+            <span class="tag">SwiftUI</span>
+            <span class="tag">RxSwift</span>
+            <span class="tag">Combine</span>
+            <span class="tag">TCA</span>
+            <span class="tag">WebKit</span>
+            <span class="tag">MVVM</span>
+            <span class="tag">Clean Architecture</span>
+            <span class="tag">Alamofire</span>
+        </div>
+        <img src="images/app-screenshot.png" alt="공비서 원장님 앱스토어 스크린샷">
+    </div>
+
+    <!-- Project Content -->
+    <div class="project-content">
+
+        <!-- 1. WebView (토스 자격 조건 WKWebView) -->
+        <div class="sub-section" id="webview">
+            <div class="sub-section-header">
+                <div class="sub-section-label">WebView · Native-Web 통합</div>
+                <h3>웹뷰 ↔ 네이티브 브릿지 설계</h3>
+                <p>웹 프론트 개발자와 협업하여 브릿지 통신 프로토콜을 설계하고, 서비스 핵심 기능을 구현</p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon amber">🔗</div>
+                    <div>
+                        <h4>JavaScript 인터페이스 및 통신 프로토콜 설계</h4>
+                        <div class="card-subtitle">예약 캘린더 · 알림톡 설정 · 이용권</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>웹 프론트 개발자와 함께 JavaScript 인터페이스 및 통신 프로토콜을 설계</li>
+                    <li>서비스의 메인 기능인 예약 캘린더를 비롯하여 알림톡 설정, 이용권 관련 화면 등을 구현</li>
+                    <li>Enum 기반 타입 세이프 브릿지 커맨드 + Codable 메시지 바디로 확장 가능한 구조 설계</li>
+                </ul>
+                <div style="margin-top: 16px;">
+                    <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">브릿지 통신 구조</div>
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Web → Native (WKScriptMessageHandler)</div>
+                        <div class="mermaid">
+graph LR
+    JS1["JavaScript<br/><small>postMessage(JSON)</small>"] -->|"JSON 메시지"| BR["Bridge Enum<br/><small>커맨드 매칭</small>"]
+    BR --> MB["MessageBody<br/><small>Codable 디코딩</small>"]
+    MB --> VC["ViewController<br/><small>핸들러 실행</small>"]
+    style JS1 fill:#FEF3C7,stroke:#F59E0B,color:#1E293B
+    style BR fill:#E8EBFF,stroke:#6B7FF2,color:#1E293B
+    style MB fill:#E8EBFF,stroke:#6B7FF2,color:#1E293B
+    style VC fill:#E8EBFF,stroke:#6B7FF2,color:#1E293B
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--secondary); margin-bottom: 6px;">Native → Web (evaluateJavaScript)</div>
+                        <div class="mermaid">
+graph LR
+    VC2["ViewController"] -->|"evaluateJavaScript"| JS2["JavaScript<br/><small>window.callback(data)</small>"]
+    style VC2 fill:#E8EBFF,stroke:#6B7FF2,color:#1E293B
+    style JS2 fill:#FEF3C7,stroke:#F59E0B,color:#1E293B
+                        </div>
+                    </div>
+                </div>
+                <div class="decision-box">
+                    <div class="decision-title">브릿지 통신 프로토콜 설계 과정</div>
+                    <p><strong>배경:</strong> 예약 캘린더를 웹뷰로 전환하면서 웹 프론트, Android 개발자와 함께 브릿지 통신 프로토콜을 처음부터 설계했습니다. 추후 알림톡, 이용권 등 다른 화면에서도 재사용할 수 있도록 확장성과 일관성을 우선으로 고려했습니다.</p>
+                    <p style="margin-top: 8px;"><strong>설계 포인트:</strong></p>
+                    <p>· 브릿지 커맨드를 Enum으로 정의하여 문자열 오타 방지 + 컴파일 타임 안전성 확보. CaseIterable로 등록을 자동화하여 누락 방지<br>
+                    · 메시지 바디를 Codable 구조체로 획일화하여, 어떤 화면에서든 동일한 패턴으로 데이터를 처리<br>
+                    · 화면별로 필요한 커맨드만 등록할 수 있도록 커맨드 리스트를 분리<br>
+                    · 새 브릿지 추가 시 enum case 1줄 + switch case 1줄 + 핸들러 메서드 1개만 추가하면 되는 구조</p>
+                    <p style="margin-top: 8px;"><strong>결과:</strong> 이 설계 패턴을 기반으로 알림톡, 매장소식 등 신규 웹뷰 기능 추가 시에도 동일한 구조로 빠르게 구현할 수 있는 기반을 마련</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon rose">🔍</div>
+                    <div>
+                        <h4>WebView 쿠키 기반 세션 관리 및 이슈 해결</h4>
+                        <div class="card-subtitle">재현 어려운 이슈를 끝까지 파고들어 해결</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>쿠키 기반 로그인 세션 관리: 페이지 이동 전 쿠키 검증 → 없으면 재설정 → 이동 허용의 2단계 검증</li>
+                    <li>앱 백그라운드 복귀 시 세션 만료 대응: 2분 이상 백그라운드 시 쿠키 재설정 + 웹뷰 리프레시</li>
+                    <li>WebView 쿠키 소실 이슈를 Safari 웹 인스펙터로 네트워크·캐시·쿠키를 분석해 해결</li>
+                    <li>원인과 해결 과정을 전사 문서로 공유하여 팀 지식 자산화</li>
+                </ul>
+                <div class="decision-box">
+                    <div class="decision-title">WebView 500 에러 해결 과정</div>
+                    <p><strong>문제:</strong> WKWebView의 dataStorage를 사용하여 Cookie를 저장하는 경우, dataStorage의 수명이 웹뷰 세션을 따라가 세션 종료 후 웹뷰 자체 갱신 시 Cookie가 사라져 500 에러가 발생. 재현이 어려워 원인 파악이 쉽지 않았습니다.</p>
+                    <p style="margin-top: 8px;"><strong>해결 방법:</strong> dataStorage 대신 JavaScript 메서드를 사용하여 유효기간 30일인 Cookie를 세팅하고, 웹뷰 로드 및 자체 새로고침 시 Cookie 존재 여부를 확인하여 없는 경우 재세팅하는 방어 로직을 구현했습니다.</p>
+                    <p style="margin-top: 8px;"><strong>임팩트:</strong><br>
+                    · 백엔드 개발자와 원인을 함께 확인하고, CS팀 및 사내 테스터와 검증 후 배포<br>
+                    · 배포 후 서버에서 감지된 500에러 감소 비율(약 84%)과 앱 업데이트 사용자 비율이 일치하여 이슈 해결을 검증. 이후 현재까지 재발 없음<br>
+                    · 원인과 해결 과정을 전사 문서로 공유하여 팀 지식 자산으로 구축</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Architecture (기본기, 코드 구현 능력) -->
+        <div class="sub-section" id="architecture">
+            <div class="sub-section-header">
+                <div class="sub-section-label">Architecture</div>
+                <h3>레거시 아키텍처 전환 및 테스트 인프라 구축</h3>
+                <p>MVC → MVVM + Clean Architecture 전환과 테스트 환경 구축</p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon blue">🏗️</div>
+                    <div>
+                        <h4>MVC → MVVM + Clean Architecture</h4>
+                        <div class="card-subtitle">아키텍처 전환</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>UI와 비즈니스 로직이 ViewController에 혼재하여 역할 분리와 유지보수가 어려웠던 구조를 개선</li>
+                    <li>계층별 책임 분리와 독립적인 테스트가 가능한 구조를 구축</li>
+                </ul>
+                <div style="margin-top: 16px;">
+                    <div style="margin-bottom: 24px;">
+                        <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Before — MVC</div>
+                        <div class="mermaid">
+graph LR
+    VC["ViewController<br/><small>UI + 비즈니스 로직 + 상태 관리</small>"] <-->|NetworkCallback| NM["NetworkModel<br/><small>Alamofire 래퍼</small>"]
+    style VC fill:#FFE4E6,stroke:#F87171,color:#1E293B
+    style NM fill:#FFE4E6,stroke:#F87171,color:#1E293B
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">After — MVVM + Clean Architecture</div>
+                        <div class="mermaid">
+graph LR
+    subgraph APP["App"]
+        V["ViewController(View)<br/><small>UI 표시</small>"] --> VM["ViewModel<br/><small>비즈니스 로직</small>"]
+        VM --> UC["UseCase<br/><small>도메인 로직</small>"]
+    end
+    subgraph NET["NetworkSystem"]
+        R["Repository<br/><small>데이터 접근</small>"] --> RT["Router<br/><small>API 정의</small>"]
+    end
+    UC --> R
+    style V fill:#E8EBFF,stroke:#6B7FF2,color:#1E293B
+    style VM fill:#E8EBFF,stroke:#6B7FF2,color:#1E293B
+    style UC fill:#F0ECFF,stroke:#A78BFA,color:#1E293B
+    style R fill:#E3F4FB,stroke:#7EC8E3,color:#1E293B
+    style RT fill:#E3F4FB,stroke:#7EC8E3,color:#1E293B
+    style APP fill:#FAFBFE,stroke:#6B7FF2,color:#64748B
+    style NET fill:#FAFBFE,stroke:#7EC8E3,color:#64748B
+                        </div>
+                    </div>
+                </div>
+                <div class="decision-box">
+                    <div class="decision-title">MVC에서 MVVM + Clean Architecture로 전환한 이유</div>
+                    <p><strong>MVC의 문제점:</strong> ViewController가 비대한 것도 있었지만, 근본적으로 역할이 명확하게 분리되어 있지 않아 버그 수정이나 기능 추가·수정 시 유지보수가 어려웠습니다. Storyboard 기반 UI로 인해 협업 시 충돌이 잦고 코드 리뷰도 어려웠습니다.</p>
+                    <p style="margin-top: 8px;"><strong>왜 MVVM + Clean Architecture를 선택했나:</strong> 입사 당시 최소 지원 버전이 iOS14로 SwiftUI의 안정성이 부족했고, MVVM + Clean Architecture는 실제 적용 사례와 학습 자료가 충분하여 팀에 안정적으로 도입할 수 있다고 판단했습니다.</p>
+                    <p style="margin-top: 8px;"><strong>전환 방식:</strong> 한번에 전환하지 않고, 먼저 Network 레이어를 새로 구현한 뒤 신규 화면부터 코드 베이스 UI + MVVM 구조로 적용하는 점진적 전환 방식을 택했습니다. 기존 MVC 코드와 공존하면서 리스크를 최소화했습니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon green">✅</div>
+                    <div>
+                        <h4>테스트 인프라 구축</h4>
+                        <div class="card-subtitle">Unit Test + UI Test + CI/CD</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>테스트가 없던 프로젝트에 계층별 Unit Test 환경 구축
+                        <ul style="margin-top: 4px;">
+                            <li>Common: 유틸 함수, Extension 검증</li>
+                            <li>Repository: API 응답 → DTO 변환 검증</li>
+                            <li>UseCase: DTO → 도메인 모델 변환, 비즈니스 로직 검증</li>
+                            <li>ViewModel: Input → Output 상태 변화 검증</li>
+                        </ul>
+                    </li>
+                    <li>크로스플랫폼 도구(Katalon) → XCUITest → Maestro(AI 친화 YAML)로 UI Test 도구 전환</li>
+                    <li>Xcode Cloud CI/CD 파이프라인 구축으로 TestFlight 자동 업로드 및 WhatToTest 자동 작성</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. UIKit + SwiftUI (새 기술 탐구, Combine) -->
+        <div class="sub-section" id="swiftui">
+            <div class="sub-section-header">
+                <div class="sub-section-label">Framework · 새로운 기술 탐구</div>
+                <h3>UIKit + SwiftUI 병행 운용</h3>
+                <p>Storyboard → 코드 베이스 UIKit → SwiftUI + TCA 점진적 전환</p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon purple">🔄</div>
+                    <div>
+                        <h4>프레임워크 전환 전략</h4>
+                        <div class="card-subtitle">기존 UIKit 체계를 유지하면서 SwiftUI 도입</div>
+                    </div>
+                </div>
+                <div class="flow">
+                    <span class="flow-step">Storyboard</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">코드 베이스 UIKit</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">SwiftUI + TCA (신규 기능)</span>
+                </div>
+                <ul>
+                    <li>UIKit 네비게이션 체계를 유지하면서 SwiftUI 화면을 통합하는 브릿지 아키텍처 설계</li>
+                    <li>네트워크 레이어에서 RxSwift와 Combine을 동시에 지원하는 구조 설계</li>
+                    <li>UIKit 디자인 시스템과 동일한 정책으로 SwiftUI 디자인 컴포넌트 구축</li>
+                </ul>
+                <div style="margin-top: 12px;">
+                    <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">네트워크 레이어 듀얼 지원 구조</div>
+                    <div class="mermaid">
+graph TB
+    subgraph SHARED["공통 레이어"]
+        RT["Router<br/><small>API 정의 (URL, Method, Params)</small>"]
+        DR["Alamofire DataRequest<br/><small>makeDataRequest()</small>"]
+        VL["Validation + Decoding<br/><small>공통 검증 · 디코딩 로직</small>"]
+        RT --> DR --> VL
+    end
+    subgraph RX["RxSwift (기존 화면)"]
+        RXR[".responseData() callback<br/><small>→ Single&lt;T&gt;</small>"]
+    end
+    subgraph CB["Combine (TCA 신규 화면)"]
+        CBR[".publishData() publisher<br/><small>→ AnyPublisher&lt;Result&lt;T&gt;&gt;</small>"]
+    end
+    VL --> RXR
+    VL --> CBR
+    style RT fill:#E3F4FB,stroke:#7EC8E3,color:#1E293B
+    style DR fill:#E3F4FB,stroke:#7EC8E3,color:#1E293B
+    style VL fill:#E3F4FB,stroke:#7EC8E3,color:#1E293B
+    style RXR fill:#F0ECFF,stroke:#A78BFA,color:#1E293B
+    style CBR fill:#E8EBFF,stroke:#6B7FF2,color:#1E293B
+    style SHARED fill:#FAFBFE,stroke:#7EC8E3,color:#64748B
+    style RX fill:#FAFBFE,stroke:#A78BFA,color:#64748B
+    style CB fill:#FAFBFE,stroke:#6B7FF2,color:#64748B
+                    </div>
+                </div>
+                <div class="decision-box">
+                    <div class="decision-title">UIKit → SwiftUI 점진적 전환 전략</div>
+                    <p><strong>SwiftUI 전환 배경:</strong> iOS 최소 지원 버전을 15로 상향하면서 SwiftUI의 안정성이 다소 확보되었고, WWDC에서도 SwiftUI 중심으로 자료가 제공되는 만큼 UIKit이 레거시가 될 것이라 판단했습니다. 사내 B2C 앱이 처음부터 SwiftUI + TCA로 구축되어 서비스 환경에서의 안정성도 확인한 상태였습니다.</p>
+                    <p style="margin-top: 8px;"><strong>브릿지 아키텍처 선택 이유:</strong> UIKit과 SwiftUI의 화면 전환 방식이 달라 기존 UIKit 화면과 호환되는 방법이 필요했습니다. 기존의 push/pop, present/dismiss 방식이 직관적이고 관리 측면에서 유리하다고 판단하여, UIKit 네비게이션 체계를 유지하면서 SwiftUI 화면을 통합하는 브릿지 구조를 설계했습니다.</p>
+                    <p style="margin-top: 8px;"><strong>RxSwift/Combine 듀얼 지원:</strong> SwiftUI + TCA 도입으로 Combine이 필요해지면서, 기존 RxSwift 기반 48개 Repository를 수정하지 않고 신규 화면에만 Combine을 적용할 수 있는 구조를 설계했습니다. Serviceable 프로토콜에 Combine 메서드를 병렬로 추가하고, 메서드 오버로딩으로 기존 코드와의 호환성을 100% 유지했습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 주요 기능 개발 (iPad 대응 강조) -->
+        <div class="sub-section" id="features">
+            <div class="sub-section-header">
+                <div class="sub-section-label">Features · iPhone/iPad</div>
+                <h3>주요 기능 개발</h3>
+                <p>직접 설계하고 구현한 기능들</p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon blue">📊</div>
+                    <div>
+                        <h4>Core Graphics 네이티브 차트 + iPad 회전 대응</h4>
+                        <div class="card-subtitle">막대/라인 차트 직접 구현 · iPhone/iPad 환경 모두 대응</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>외부 차트 라이브러리의 커스터마이징 한계를 해결하기 위해 Core Graphics로 직접 구현</li>
+                    <li>iPad 회전 시 CAShapeLayer 기반 동적 재렌더링을 적용하여 iPhone/iPad 환경 모두 대응</li>
+                    <li>전 화면 iPad 회전 대응 (CollectionView 레이아웃 재계산, 온보딩 프레임 재조정 등)</li>
+                </ul>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-align: center;">iPad Portrait</div>
+                        <img src="images/Statistics_iPad_Portrait.png" alt="iPad 세로 차트" style="width: 100%; border-radius: var(--radius); border: 1px solid var(--border);">
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-align: center;">iPad Landscape</div>
+                        <img src="images/Statistics_iPad_Landscape.png" alt="iPad 가로 차트" style="width: 100%; border-radius: var(--radius); border: 1px solid var(--border);">
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon green">🔍</div>
+                    <div>
+                        <h4>앱 배포 없이 대응 가능한 구조 설계</h4>
+                        <div class="card-subtitle">서버 주도 필터 · Firebase Remote Config</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>고객 목록 필터를 서버 주도로 구성하여 신규 필터 추가 시 앱 업데이트 없이 대응</li>
+                    <li>Firebase Remote Config를 활용하여 서버 배포 없이 기능 제어</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon cyan">🛠️</div>
+                    <div>
+                        <h4>개발 환경 및 보안 개선</h4>
+                        <div class="card-subtitle">디버깅 효율 향상 · 데이터 보안 강화</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>Pulse 네트워크 디버거를 도입하여 TestFlight 빌드에서도 QA 엔지니어와 백엔드 개발자가 직접 API 요청 정보를 확인할 수 있는 환경 구축</li>
+                    <li>민감 데이터 저장을 UserDefaults에서 Keychain으로 마이그레이션하여 보안 강화</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5. 프로젝트 관리 (다직군 협업) -->
+        <div class="sub-section" id="team">
+            <div class="sub-section-header">
+                <div class="sub-section-label">Collaboration · 다직군 협업</div>
+                <h3>프로젝트 관리 및 팀 문화 기여</h3>
+                <p>스크럼 마스터로서 다양한 직군과 협업하며 프로젝트 운영</p>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon amber">🤝</div>
+                    <div>
+                        <h4>프로젝트 운영 및 협업</h4>
+                        <div class="card-subtitle">스크럼 마스터 · 기획·디자인·QA·백엔드 협업</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>매출 시스템 리뉴얼(7개월), 고객 차트 개선(6개월) 등 주요 프로젝트에서 iOS 개발과 스크럼 마스터 병행</li>
+                    <li>PR 리뷰를 통해 코드 품질뿐 아니라 정책적 고려사항까지 논의하여 서비스 품질을 높이는 리뷰 문화 주도</li>
+                    <li>코드 컨벤션, 테스트 작성, API 구현 등 팀 가이드 문서를 작성하여 공유</li>
+                    <li>iOS14 → iOS15 최소 지원 버전 상향을 위해 3개월치 사용자 데이터를 직접 추출·분석하여 CTO, PO 승인 도출</li>
+                </ul>
+                <div class="decision-box">
+                    <div class="decision-title">사용자 경험 개선 사례</div>
+                    <p><strong>iOS/Android 간 UX 개선:</strong> 매출 리뉴얼 프로젝트에서 푸시 알림을 통한 진입 페이지가 iOS와 Android에서 다르다는 것을 발견하고, 장단점을 비교하여 통일 방안을 이끌어냈습니다.</p>
+                    <p style="margin-top: 8px;"><strong>데이터 기반 의사결정:</strong> iOS14→iOS15 최소 지원 버전 상향을 위해 3개월치 사용자 데이터를 직접 추출·분석하여 iOS14 사용자가 0.1%대임을 근거로 CTO, PO 승인을 도출했습니다.</p>
+                    <p style="margin-top: 8px;"><strong>화면 전환 설계 제안:</strong> 예약 캘린더와 매출 화면 간 이동 시 무한 루프가 발생할 수 있는 설계를 발견하고, "프로세스가 끝나면 진입점으로 돌아가는 구조"를 기획단에 제안하여 반영. 같은 화면이라도 진입점에 따라 나가는 방법이 다르도록 구현했습니다.</p>
+                    <p style="margin-top: 8px;"><strong>서비스 운영 대응:</strong> 매출 리뉴얼 시 기획단에서 의도적으로 제거한 기능이 출시 후 CS로 인입되었고, 도메인 지식을 활용해 다른 비즈니스 로직에 영향을 미치지 않는 방법을 찾아 빠르게 복구·배포했습니다. 이후 기능 제거 시 데이터를 근거로 제시하는 습관을 갖게 되었습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. AI 자동화 (차별점, 짧게) -->
+        <div class="sub-section" id="ai">
+            <div class="sub-section-header">
+                <div class="sub-section-label">AI Automation</div>
+                <h3>AI 기반 개발 자동화 체계</h3>
+                <p>개발 전 과정을 커버하는 AI 스킬과 가이드 문서 체계</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">커스텀 AI 스킬</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">28</div>
+                    <div class="stat-label">가이드 문서</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">90%</div>
+                    <div class="stat-label">네트워크 테스트 커버리지</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">60~70%</div>
+                    <div class="stat-label">테스트 작성 시간 단축</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon purple">🤖</div>
+                    <div>
+                        <h4>개발 전 과정 AI 자동화</h4>
+                        <div class="card-subtitle">브랜치 생성 → 테스트 → 커밋 → PR → 크래시 대응</div>
+                    </div>
+                </div>
+                <ul>
+                    <li>브랜치 생성 스킬부터 시작하여 테스트 자동 생성, Git 워크플로우, 크래시 대응까지 점진적으로 확장하며 15개 커스텀 AI 스킬 설계</li>
+                    <li>Crashlytics 크래시 자동 분류 → 이슈 등록 → 브랜치 생성 → 수정 → PR 생성 프로세스 구축</li>
+                    <li>28개 가이드 문서로 누가 AI를 사용하더라도 동일한 품질의 결과물을 얻을 수 있는 체계 구축</li>
+                </ul>
+            </div>
+        </div>
+
+    </div><!-- /project-content -->
+
+</div><!-- /container -->
+
+
+</body>
+</html>

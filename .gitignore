@@ -1,0 +1,22 @@
+# 로컬 도구 (사이트 콘텐츠 아님, toss.html 참조)
+node_modules/
+package-lock.json
+package.json
+generate-pdf.js
+
+# macOS
+.DS_Store
+
+# 빌드 산출물 / 문서
+*.pdf
+
+# 회사별 지원 문서 (공개하지 않음)
+toss.html
+toss-pdf-test.html
+tving.html
+
+# A4 인쇄 실험본 (로컬 보관)
+portfolio-print.html
+
+# 구버전 포트폴리오 (로컬 보관)
+index_v1.html
