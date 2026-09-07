@@ -283,8 +283,8 @@
                 </div>
                 <ul>
                     <li>기획 자료·Figma·백엔드 스펙·기존 코드 등 작업에 필요한 자료를 분석해 <strong>구현 범위와 영향도까지 포함한 개발 일감을 자동 생성</strong>하는 task-planner 스킬 구축</li>
-                    <li><strong>생성/검증 역할 분리 · 파일 기반 결과 전달로 메인 컨텍스트 오염 방지</strong> 등 하네스 엔지니어링 원칙 적용 (서브에이전트로 역할 분리 → 품질 게이트 확보)</li>
-                    <li>Figma MCP rate-limit 병목을 <strong>전용 fetcher 신설(노드당 1회 fetch)</strong>로 해결 → <strong>서브에이전트 토큰 65% 절감</strong></li>
+                    <li><strong>생성한 에이전트가 스스로 검증하지 않도록 생성/검증 역할을 분리</strong>하고, <strong>결과를 파일로 전달해 메인 컨텍스트 오염을 방지</strong>하는 하네스 원칙 적용</li>
+                    <li><strong>UI·흐름·분기 등 관점별 분석 에이전트가 같은 Figma 노드를 각각 조회하면서 rate-limit에 걸리던 병목</strong>을, <strong>노드당 1회만 호출해 결과를 공유하는 방식</strong>으로 바꿔 해결 → <strong>서브에이전트 토큰 65% 절감</strong></li>
                 </ul>
                 <div class="flow-diagram" style="margin-top: 24px;">
                     <svg viewBox="0 0 1100 570" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; display: block;">
@@ -388,18 +388,18 @@
                         <rect x="620" y="108" width="460" height="86" rx="10" fill="#F0ECFF" stroke="#A78BFA" stroke-width="2"/>
                         <text x="850" y="132" text-anchor="middle" font-size="14" font-weight="700" fill="#7C3AED" font-family="sans-serif">figma-fetcher ⭐ 신설</text>
                         <text x="850" y="152" text-anchor="middle" font-size="12" fill="#7C3AED" font-family="sans-serif">노드당 1회 fetch → raw 데이터 저장</text>
-                        <text x="850" y="172" text-anchor="middle" font-size="11" fill="#64748B" font-family="sans-serif">이전: 각 lens마다 개별 fetch → rate-limit 도달</text>
+                        <text x="850" y="172" text-anchor="middle" font-size="11" fill="#64748B" font-family="sans-serif">이전: 에이전트마다 개별 조회 → rate-limit 도달</text>
 
                         <line x1="850" y1="194" x2="850" y2="222" stroke="#A78BFA" stroke-width="1.8" marker-end="url(#arrow-accent)"/>
                         <text x="882" y="212" font-size="11" fill="#7C3AED" font-family="sans-serif" font-style="italic">raw 전달</text>
 
                         <!-- 4 Lens 병렬 -->
                         <rect x="620" y="224" width="460" height="190" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
-                        <text x="850" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="#1E293B" font-family="sans-serif">Lens 서브에이전트 (병렬)</text>
+                        <text x="850" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="#1E293B" font-family="sans-serif">관점별 분석 에이전트 (병렬)</text>
 
                         <rect x="635" y="262" width="215" height="66" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
                         <text x="742" y="282" text-anchor="middle" font-size="12" font-weight="600" fill="#1E293B" font-family="sans-serif">figma-screen-analyzer</text>
-                        <text x="742" y="300" text-anchor="middle" font-size="10.5" fill="#64748B" font-family="sans-serif">화면 요소 분석</text>
+                        <text x="742" y="300" text-anchor="middle" font-size="10.5" fill="#64748B" font-family="sans-serif">UI 요소 분석</text>
                         <text x="742" y="318" text-anchor="middle" font-size="10" fill="#94A3B8" font-family="monospace">→ screen.md</text>
 
                         <rect x="855" y="262" width="215" height="66" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
@@ -426,10 +426,10 @@
                     </svg>
                 </div>
                 <div class="decision-box">
-                    <div class="decision-title">왜 figma-fetcher를 신설했나</div>
-                    <p><strong>문제:</strong> figma-analyze의 lens 서브에이전트 4종이 각자 Figma MCP API 3개를 호출하면서 노드당 12회 호출이 발생. 시범 실행에서 rate-limit 도달로 매트릭스 spawn 후 결과 종합 실패.</p>
-                    <p style="margin-top: 8px;"><strong>대안 검토:</strong> lens 호출 시점 지연·순차 실행 등도 검토했으나, 근본적으로 API 호출 횟수 자체를 줄이는 방향을 선택.</p>
-                    <p style="margin-top: 8px;"><strong>선택:</strong> 노드당 fetcher가 Figma MCP 3개 API(<code>get_design_context</code> · <code>get_metadata</code> · <code>get_screenshot</code>)를 1회씩만 호출해 raw 데이터를 lens 서브에이전트에 전달하는 패턴 신설. 배치 단위 순차 실행으로 순간 부하까지 분산.</p>
+                    <div class="decision-title">왜 노드당 1회만 호출하게 바꿨나</div>
+                    <p><strong>문제:</strong> UI·흐름·분기 등 <strong>관점별 분석 에이전트 4종이 같은 노드를 각각 조회</strong>하면서 Figma MCP API 호출이 <strong>노드당 12회</strong> 발생. 시범 실행에서 <strong>rate-limit에 걸려 분석이 중간에 끊김</strong>.</p>
+                    <p style="margin-top: 8px;"><strong>대안 검토:</strong> 호출 시점을 늦추거나 순차 실행하는 방법도 검토했으나, <strong>근본적으로 호출 횟수 자체를 줄이는 방향</strong>을 선택.</p>
+                    <p style="margin-top: 8px;"><strong>선택:</strong> 노드당 한 번만 Figma MCP 3개 API(<code>get_design_context</code> · <code>get_metadata</code> · <code>get_screenshot</code>)를 호출해 <strong>받아온 원본 데이터를 분석 에이전트 4종에 그대로 전달</strong>. 노드를 <strong>3개씩 묶어 순차 처리</strong>해 순간 호출량도 분산.</p>
                     <p style="margin-top: 8px;"><strong>결과:</strong> 노드당 호출 12회 → 3회, 서브에이전트 토큰 <strong>1.6M → 570K (약 65% 절감)</strong>, rate-limit 회피.</p>
                 </div>
             </div>
@@ -451,14 +451,15 @@
                     </div>
                 </div>
                 <ul>
-                    <li><strong>TCA + Clean Architecture 표준 수립</strong> — Feature(View·Store) → Domain(UseCase·Model) → Data(Router·Client·DTO·NetworkClient) 단방향 의존. Feature ↔ UseCase 1:1로 Store는 UseCase만 의존 (<code>@Dependency</code> 기반 DI)</li>
-                    <li><strong>UseCase가 DTO → Model 변환을 책임</strong> — DTO는 전 필드 옵셔널로 서버 스펙 변동을 흡수하고, UseCase에서 Model 매핑 시점에 폴백 처리 (필드 누락 크래시 회피)</li>
-                    <li><strong>화면 상태 관리를 TCA로 점진 전환</strong> — ViewModel·인라인 <code>@State</code>·부분 TCA가 혼재하던 화면 상태를 표준 체인으로 정리. 레거시와 병존시키며 전환해 일괄 재작성 회피</li>
+                    <li><strong>TCA + Clean Architecture 표준 수립</strong> — <strong>Presentation(View·Feature) → Domain(UseCase·Model) → Data(Router·Client·DTO·NetworkClient) 단방향 의존</strong>. <strong>화면 단위 Feature ↔ UseCase 1:1</strong>로 Store는 UseCase만 의존 (<code>@Dependency</code> 기반 DI)</li>
+                    <li><strong>UseCase가 DTO → Model 변환을 책임</strong> — <strong>배포 후 서버 스펙이 바뀌어도 견딜 수 있도록</strong> DTO는 <strong>전 필드 옵셔널</strong>로 받고, UseCase의 Model 매핑 시점에 폴백 처리</li>
+                    <li><strong>중간 Entity를 두지 않고 UseCase에서 한 번에 변환</strong> — 한 API 응답이 화면마다 다르게 쓰여 <strong>중간 Entity가 DTO와 거의 같은 형태가 될 것으로 판단</strong>하여 UseCase에서 변환하도록 구현</li>
+                    <li><strong>화면 상태 관리를 TCA로 점진 전환</strong> — ViewModel·인라인 <code>@State</code>·부분 TCA가 혼재하던 화면 상태를 <strong>View → Store → UseCase → Client 단방향 체인으로 정리</strong>. 레거시와 병존시키며 전환해 일괄 재작성 회피</li>
                     <li><strong>Data 레이어를 V2로 신규 구현</strong> — async/await + Get + <code>@Dependency</code> 기반 Router·Client·DTO 3계층, 도메인별 분할 + 공통 인프라(NetworkClient·AuthInterceptor·TokenStore 등). Swagger tag 단일 기준으로 도메인 매핑</li>
-                    <li><strong>직접 만든 <code>/v2-api</code> 스킬</strong>로 Swagger tag 입력 → Router·Client·DTO·README 자동 생성, 코드↔문서 동기화 유지</li>
+                    <li><strong>직접 만든 <code>/v2-api</code> 스킬</strong>에 <strong>Swagger 문서 URL을 전달하면</strong> Router·Client·DTO·README 자동 생성, 코드↔문서 동기화 유지</li>
                 </ul>
                 <div class="flow-diagram" style="margin-top: 24px;">
-                    <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; display: block;">
+                    <svg viewBox="0 0 1100 778" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; display: block;">
                         <defs>
                             <marker id="merged-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
                                 <path d="M0 0 L10 5 L0 10 z" fill="#64748B"/>
@@ -468,52 +469,56 @@
                         <!-- Left column title -->
                         <text x="40" y="30" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#334155">계층별 호출 체인</text>
 
-                        <!-- Feature layer group -->
+                        <!-- Presentation layer group -->
                         <rect x="40" y="48" width="500" height="180" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
-                        <text x="60" y="78" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#1E3A8A">Feature</text>
-                        <text x="140" y="78" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">화면 계층 · 사용자 플로우</text>
+                        <text x="60" y="78" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#1E3A8A">Presentation</text>
+                        <text x="195" y="78" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">화면 · 사용자 플로우</text>
                         <rect x="70" y="94" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1"/>
                         <text x="90" y="118" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#1E3A8A">View</text>
                         <text x="90" y="138" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">SwiftUI View · 이벤트 진입</text>
                         <line x1="290" y1="152" x2="290" y2="163" stroke="#64748B" stroke-width="1.5" marker-end="url(#merged-arrow)"/>
                         <rect x="70" y="166" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1"/>
-                        <text x="90" y="190" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#1E3A8A">Store <tspan font-size="12" font-weight="400" fill="#64748B">(@Reducer)</tspan></text>
+                        <text x="90" y="190" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#1E3A8A">Feature <tspan font-size="12" font-weight="400" fill="#64748B">(@Reducer · TCA Store)</tspan></text>
                         <text x="90" y="210" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">액션 수신 · 이펙트 발행</text>
 
                         <!-- Arrow to Domain -->
                         <line x1="290" y1="230" x2="290" y2="250" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
 
                         <!-- Domain layer group -->
-                        <rect x="40" y="255" width="500" height="150" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+                        <rect x="40" y="255" width="500" height="208" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
                         <text x="60" y="285" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#065F46">Domain</text>
-                        <text x="140" y="285" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">업무 로직 · UseCase가 Client 참조</text>
+                        <text x="140" y="285" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">비즈니스 로직</text>
                         <rect x="70" y="300" width="440" height="90" rx="6" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="1"/>
-                        <text x="90" y="326" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#065F46">UseCase.fetch()</text>
-                        <text x="90" y="352" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#475569">· Client 참조 (엔드포인트 호출)</text>
-                        <text x="90" y="374" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#475569">· DTO → Model 변환 (옵셔널 폴백)</text>
+                        <text x="90" y="324" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#065F46">UseCase</text>
+                        <text x="90" y="346" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#475569">· @Dependency로 Client 주입받아 호출</text>
+                        <text x="90" y="364" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#475569">· DTO → Model 변환 (옵셔널 폴백)</text>
+                        <text x="90" y="382" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#475569">· Presentation에는 Model만 반환 (DTO 비노출)</text>
+                        <rect x="70" y="398" width="440" height="52" rx="6" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="1"/>
+                        <text x="90" y="420" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#065F46">Model</text>
+                        <text x="90" y="439" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">화면에 전달하는 도메인 모델</text>
 
                         <!-- Arrow to Data -->
-                        <line x1="290" y1="405" x2="290" y2="425" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
+                        <line x1="290" y1="463" x2="290" y2="483" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
 
                         <!-- Data layer group -->
-                        <rect x="40" y="430" width="500" height="180" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
-                        <text x="60" y="460" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#92400E">Data / Network</text>
-                        <text x="205" y="460" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">V2 네트워킹 신규 구현 영역</text>
-                        <rect x="70" y="476" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#FCD34D" stroke-width="1"/>
-                        <text x="90" y="500" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#92400E">Client.get()</text>
-                        <text x="90" y="520" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">Router 기반 · @DependencyClient</text>
-                        <line x1="290" y1="534" x2="290" y2="545" stroke="#64748B" stroke-width="1.5" marker-end="url(#merged-arrow)"/>
-                        <rect x="70" y="548" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#FCD34D" stroke-width="1"/>
-                        <text x="90" y="572" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#92400E">NetworkClient</text>
-                        <text x="90" y="592" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">Get · AuthInterceptor · TokenStore</text>
+                        <rect x="40" y="488" width="500" height="180" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+                        <text x="60" y="518" font-family="ui-sans-serif, -apple-system" font-size="17" font-weight="700" fill="#92400E">Data / Network</text>
+                        <text x="205" y="518" font-family="ui-sans-serif, -apple-system" font-size="13" fill="#64748B">V2 네트워킹 신규 구현 영역</text>
+                        <rect x="70" y="534" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#FCD34D" stroke-width="1"/>
+                        <text x="90" y="558" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#92400E">Client</text>
+                        <text x="90" y="578" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">Router 기반 · @DependencyClient</text>
+                        <line x1="290" y1="592" x2="290" y2="603" stroke="#64748B" stroke-width="1.5" marker-end="url(#merged-arrow)"/>
+                        <rect x="70" y="606" width="440" height="55" rx="6" fill="#FFFFFF" stroke="#FCD34D" stroke-width="1"/>
+                        <text x="90" y="630" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="600" fill="#92400E">NetworkClient</text>
+                        <text x="90" y="650" font-family="ui-sans-serif, -apple-system" font-size="12" fill="#64748B">Get · AuthInterceptor · TokenStore</text>
 
                         <!-- Arrow to Backend -->
-                        <line x1="290" y1="612" x2="290" y2="632" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
-                        <rect x="70" y="635" width="440" height="44" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
-                        <text x="90" y="663" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#334155">Backend API</text>
+                        <line x1="290" y1="670" x2="290" y2="690" stroke="#64748B" stroke-width="2" marker-end="url(#merged-arrow)"/>
+                        <rect x="70" y="693" width="440" height="44" rx="6" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+                        <text x="90" y="721" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#334155">Backend API</text>
 
                         <!-- Divider -->
-                        <line x1="580" y1="20" x2="580" y2="700" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4,4"/>
+                        <line x1="580" y1="20" x2="580" y2="758" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4,4"/>
 
                         <!-- Right column title -->
                         <text x="610" y="30" font-family="ui-sans-serif, -apple-system" font-size="15" font-weight="700" fill="#7C3AED">V2 네트워킹 폴더 구조</text>
