@@ -177,7 +177,7 @@
             background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
             padding: 4px 12px; font-size: 12px; font-weight: 600; color: var(--text-secondary);
         }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
         .stat-item { text-align: center; padding: 16px; background: var(--bg); border-radius: var(--radius); }
         .stat-number { font-size: 24px; font-weight: 800; color: var(--primary); }
         .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
@@ -1030,12 +1030,16 @@ graph TB
             <div class="sub-section-header">
                 <div class="sub-section-label">AI Automation</div>
                 <h3>AI 기반 개발 자동화 체계</h3>
-                <p>개발 전 과정을 커버하는 AI 스킬과 가이드 문서 체계</p>
+                <p>개발 전 과정을 커버하는 AI 스킬·에이전트와 가이드 문서 체계</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number">15</div>
+                    <div class="stat-number">17</div>
                     <div class="stat-label">커스텀 AI 스킬</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">커스텀 에이전트</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">28</div>
@@ -1059,7 +1063,7 @@ graph TB
                     </div>
                 </div>
                 <ul>
-                    <li>브랜치 생성 스킬부터 시작하여 테스트 자동 생성, Git 워크플로우, 크래시 대응까지 점진적으로 확장하며 15개 커스텀 AI 스킬 설계</li>
+                    <li>브랜치 생성 스킬부터 시작하여 테스트 자동 생성, Git 워크플로우, 크래시 대응까지 점진적으로 확장하며 <strong>커스텀 AI 스킬 17종·에이전트 15종</strong> 설계</li>
                     <li>Crashlytics 크래시 자동 분류 → 이슈 등록 → 브랜치 생성 → 수정 → PR 생성 프로세스 구축</li>
                     <li>28개 가이드 문서로 누가 AI를 사용하더라도 동일한 품질의 결과물을 얻을 수 있는 체계 구축</li>
                 </ul>
